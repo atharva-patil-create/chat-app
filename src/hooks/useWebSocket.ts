@@ -1,7 +1,7 @@
 // Updated useWebSocket.ts with reconnection logic and mock API integration
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { addMessage, updateMessageStatus } from "../store/slices/chatSlice";
+import { addMessage } from "../store/slices/chatSlice";
 
 const useWebSocket = (url: string) => {
   const socketRef = useRef<WebSocket | null>(null);

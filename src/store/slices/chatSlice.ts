@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { fetchChatHistory } from "../../api/mockApi";
 
-// Message structure
 interface Message {
   id: string;
   text: string;
   sender: "user" | "ai";
-  status: "sending" | "sent" | "delivered" | "read";
+  status: "sent" | "delivered" | "read";
   timestamp: number;
 }
 
@@ -19,21 +19,11 @@ const initialState: ChatState = {
   isTyping: false,
 };
 
-// Mock API request for sending messages
-export const sendMessageAPI = createAsyncThunk(
-  "chat/sendMessage",
-  async ({ id, text }: { id: string; text: string }) => {
-    return new Promise<Message>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          id,
-          text,
-          sender: "user",
-          status: "sent",
-          timestamp: Date.now(),
-        });
-      }, 500);
-    });
+// ✅ Load chat history (Mock API Integration)
+export const loadChatHistory = createAsyncThunk(
+  "chat/loadHistory",
+  async () => {
+    return await fetchChatHistory();
   }
 );
 
@@ -41,15 +31,9 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    // Add a message (used for optimistic UI updates)
     addMessage: (state, action: PayloadAction<Message>) => {
-      const exists = state.messages.some((msg) => msg.id === action.payload.id);
-      if (!exists) {
-        state.messages.push(action.payload);
-      }
+      state.messages.push(action.payload);
     },
-
-    // Update a message's status (sent → delivered → read)
     updateMessageStatus: (
       state,
       action: PayloadAction<{ id: string; status: "delivered" | "read" }>
@@ -61,26 +45,16 @@ const chatSlice = createSlice({
         message.status = action.payload.status;
       }
     },
-
-    // Toggle typing indicator
     setTyping: (state, action: PayloadAction<boolean>) => {
       state.isTyping = action.payload;
     },
   },
-
-  // Handle async actions
   extraReducers: (builder) => {
-    builder.addCase(sendMessageAPI.fulfilled, (state, action) => {
-      const message = state.messages.find(
-        (msg) => msg.id === action.payload.id
-      );
-      if (message) {
-        message.status = "sent";
-      }
+    builder.addCase(loadChatHistory.fulfilled, (state, action) => {
+      state.messages = action.payload;
     });
   },
 });
 
-// Export actions and reducer
 export const { addMessage, updateMessageStatus, setTyping } = chatSlice.actions;
 export default chatSlice.reducer;

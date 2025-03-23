@@ -39,3 +39,13 @@ export const sendMessageToApi = async (message: string) => {
     }, 500);
   });
 };
+export const fetchChatHistory = async () => {
+  try {
+    const response = await fetch("/mockData/chatHistory.json");
+    if (!response.ok) throw new Error("Failed to fetch chat history");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching chat history:", error);
+    return []; // Return empty array if error occurs
+  }
+};

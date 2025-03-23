@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "text": "Hello! How can I help you?",
+    "sender": "ai",
+    "status": "sent",
+    "timestamp": 1711000000000
+  },
+  {
+    "id": "2",
+    "text": "What is React?",
+    "sender": "user",
+    "status": "sent",
+    "timestamp": 1711000001000
+  }
+]
