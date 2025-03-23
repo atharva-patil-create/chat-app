@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+}
+
+.format-btn {
+  @apply text-gray-300 hover:text-white border border-gray-600 
+         bg-gray-700 hover:bg-gray-600 transition-all duration-300 
+         w-10 h-10 flex items-center justify-center rounded-xl text-lg;
+}
+
+.active-format {
+  @apply bg-blue-500 text-white shadow-lg shadow-blue-400/50;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/***** Chat Bubble Glow Effect *****/
+.shadow-md {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.dot-flash {
+  animation: dot-flash 1.4s infinite;
+}
+/* 
+@keyframes dot-flash {
+  0%, 100% { content: " "; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+} */
+body {
+  @apply bg-gray-100 dark:bg-gray-900 transition-colors;
+}
